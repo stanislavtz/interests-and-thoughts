@@ -1,3 +1,4 @@
+import os
 from datetime import date
 
 from flask import Flask, render_template, redirect, url_for, flash, abort
@@ -22,14 +23,14 @@ from models.comment import Comment
 app = Flask(__name__)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI", "sqlite:///blog.db")
 db.init_app(app)
 
 with app.app_context():
     db.create_all()
 
 # CONFIG WTFORMS
-app.config['SECRET_KEY'] = '8BYkEfBA6O6dozeWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.environ.get('FLASK_KEY')
 Bootstrap5(app)
 ckeditor = CKEditor(app)
 
